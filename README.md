@@ -3,7 +3,7 @@ your favorite drive (e.g. [Nextcloud](https://rclone.org/webdav/) or [Google
 Drive](https://rclone.org/drive/)), then:
 
 ```shell
-rclone --verbose copy "remotename:/remotepath" ./static/pics
+rclone --verbose sync "remotename:/remotepath" ./static/pics
 ```
 
 In this case:  
