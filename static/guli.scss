@@ -1,0 +1,11 @@
+$image-size: 12rem;
+
+body {
+  margin: 0 auto;
+  max-width: 50em;
+}
+
+.gallery-image {
+  max-height: $image-size;
+  max-width: $image-size;
+}
