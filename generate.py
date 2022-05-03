@@ -25,21 +25,17 @@ def pics_in_dir(d: Path):
         yield p.name, f"/{p.relative_to(pics_dir.parent)}"
 
 
-def render(template_name, **kwargs):
+def render(template_name, title, **kwargs):
     rendered = env.get_template(template_name).render(**kwargs)
-    out_dir.joinpath(template_name).write_text(rendered)
-
-
-def write_gallery(directory: Path):
-    tats = pics_in_dir(directory)
-    render("tats.html", pics=tats)
+    out_dir.joinpath(f"{title}.html").write_text(rendered)
 
 
 print()
 print(datetime.now())
 
-render("index.html")
-write_gallery(pics_dir / "tats")
+render("index.html", "index")
+render("gallery.html", "tats", pics=pics_in_dir(pics_dir / "tats"))
+render("gallery.html", "mu", pics=pics_in_dir(pics_dir / "mu"))
 print("💪 Generated pages")
 
 copytree("static", "out/", dirs_exist_ok=True)
