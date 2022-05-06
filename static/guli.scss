@@ -1,27 +1,23 @@
-$image-size: 12rem;
+$links-margin: 20%;
 $page-padding: 14px;
 
 html {
   background-color: #99ccff;
 
   /* for mobile */
-  padding-right: $page-padding;
   padding-left: $page-padding;
+  padding-right: $page-padding;
 }
 
 body {
-  margin: 0 auto;
-}
-
-.gallery-image {
-  max-height: $image-size;
-  max-width: $image-size;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #index-links {
   display: grid;
   justify-items: center;
-  grid-template-columns: auto auto;
+  grid-template-columns: 1fr 1fr;
 }
 
 #title {
@@ -30,9 +26,24 @@ body {
   align-items: center;
 }
 
+#gallery {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(3, 1fr);
+
+  img {
+    max-width: 100%;
+  }
+}
+
 /* rules for computer screens */
 @media (min-width: 1000px) {
   body {
     max-width: 40em;
+  }
+
+  #index-links {
+    margin-left: $links-margin;
+    margin-right: $links-margin;
   }
 }
