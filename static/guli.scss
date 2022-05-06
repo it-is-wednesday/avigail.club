@@ -1,12 +1,16 @@
 $image-size: 12rem;
+$page-padding: 14px;
 
 html {
-  background-color: #99CCFF;
+  background-color: #99ccff;
+
+  /* for mobile */
+  padding-right: $page-padding;
+  padding-left: $page-padding;
 }
 
 body {
   margin: 0 auto;
-  max-width: 40em;
 }
 
 .gallery-image {
@@ -16,6 +20,19 @@ body {
 
 #index-links {
   display: grid;
-  grid-template-columns: auto auto;
   justify-items: center;
+  grid-template-columns: auto auto;
+}
+
+#title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* rules for computer screens */
+@media (min-width: 1000px) {
+  body {
+    max-width: 40em;
+  }
 }
