@@ -2,11 +2,28 @@ $links-margin: 20%;
 $page-padding: 14px;
 
 html {
-  background-color: #99ccff;
-
   /* for mobile */
   padding-left: $page-padding;
   padding-right: $page-padding;
+
+  animation-duration: 2s;
+  animation-name: bg-colors;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes bg-colors {
+  from {
+    background-color: #8bf5ff;
+  }
+
+  30% {
+    background-color: #99ccff;
+  }
+
+  to {
+    background-color: #99ccff;
+  }
 }
 
 body {
