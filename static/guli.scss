@@ -1,5 +1,8 @@
+@use "sass:color";
+
 $links-margin: 20%;
 $page-padding: 14px;
+$bg-color: #99ccff;
 
 html {
   /* for mobile */
@@ -14,15 +17,15 @@ html {
 
 @keyframes bg-colors {
   from {
-    background-color: #8bf5ff;
+    background-color: color.adjust($bg-color, $green: 60%);
   }
 
   30% {
-    background-color: #99ccff;
+    background-color: $bg-color;
   }
 
   to {
-    background-color: #99ccff;
+    background-color: $bg-color;
   }
 }
 
