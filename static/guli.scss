@@ -2,14 +2,15 @@
 
 $links-margin: 20%;
 $page-padding: 14px;
-$bg-color: #99ccff;
+$bg-base-color: #99ccff;
+$bg-flash-color: color.adjust($bg-base-color, $green: 60%);
 
 html {
   /* for mobile */
   padding-left: $page-padding;
   padding-right: $page-padding;
 
-  animation-duration: 2s;
+  animation-duration: 4s;
   animation-name: bg-colors;
   animation-iteration-count: infinite;
   animation-direction: alternate;
@@ -17,15 +18,15 @@ html {
 
 @keyframes bg-colors {
   from {
-    background-color: color.adjust($bg-color, $green: 60%);
+    background-color: $bg-base-color;
   }
 
-  30% {
-    background-color: $bg-color;
+  90% {
+    background-color: $bg-base-color;
   }
 
   to {
-    background-color: $bg-color;
+    background-color: $bg-flash-color;
   }
 }
 
