@@ -16,6 +16,15 @@ out_dir.mkdir(exist_ok=True)
 pics_dir = Path("static/pics")
 
 
+def is_pic_square(pic: Path) -> bool:
+    """Returns True if pic's width is equal to its height"""
+    # I could use the `file` command as well but the output of `identify` is
+    # formattable and I feel like `file`'s interface isn't consistent
+    proc = run(["identify", "-format", "%[fx:w]x%[fx:h]", pic], capture_output=True)
+    width, height = proc.stdout.decode().split("x")
+    return width == height
+
+
 def pics_in_dir(d: Path):
     """
     Iterate over files in given directory, return a tuple of the filename and a
@@ -36,8 +45,17 @@ print(datetime.now())
 
 if __name__ == "__main__":
     render("index.html", "index")
-    render("gallery.html", "tats", pics=pics_in_dir(pics_dir / "tats"))
-    render("gallery.html", "mu", pics=pics_in_dir(pics_dir / "mu"))
+
+    # Render makeup and tattoo galleries, stopping the process if one of the
+    # pics isn't square, prompting the user to fix it manually (I'm not going
+    # to let a machine randomly crop pics..............)
+    for category in ["tats", "mu"]:
+        directory = pics_dir / category
+        for pic in directory.iterdir():
+            if not is_pic_square(pic):
+                filename = pic.relative_to(directory.parent)
+                raise ValueError(f"PLEASE make {filename} a square!!!! I beg")
+        render("gallery.html", category, pics=pics_in_dir(directory))
     print("💪 Generated pages")
 
     copytree("static", "out/", dirs_exist_ok=True)
