@@ -33,14 +33,16 @@ def render(template_name, title, **kwargs):
 print()
 print(datetime.now())
 
-render("index.html", "index")
-render("gallery.html", "tats", pics=pics_in_dir(pics_dir / "tats"))
-render("gallery.html", "mu", pics=pics_in_dir(pics_dir / "mu"))
-print("💪 Generated pages")
 
-copytree("static", "out/", dirs_exist_ok=True)
-print("💪 Copied static assets")
+if __name__ == "__main__":
+    render("index.html", "index")
+    render("gallery.html", "tats", pics=pics_in_dir(pics_dir / "tats"))
+    render("gallery.html", "mu", pics=pics_in_dir(pics_dir / "mu"))
+    print("💪 Generated pages")
 
-copy2("static/guli.scss", "out/guli.scss")
-run(["sass", "out/guli.scss", "out/guli.css"])
-print("💪 Generated CSS")
+    copytree("static", "out/", dirs_exist_ok=True)
+    print("💪 Copied static assets")
+
+    copy2("static/guli.scss", "out/guli.scss")
+    run(["sass", "out/guli.scss", "out/guli.css"])
+    print("💪 Generated CSS")
