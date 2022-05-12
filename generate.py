@@ -46,7 +46,7 @@ def render_category(category_title: str) -> Iterator[Tuple[str, HTML]]:
     pics_in_dir = list(directory.iterdir())
     gallery_pics: List[Tuple[str, str]] = []
 
-    for pic in pics_in_dir:
+    for i, pic in enumerate(pics_in_dir):
         if not is_pic_square(pic):
             filename = pic.relative_to(directory.parent)
             raise ValueError(f"PLEASE make {filename} a square!!!! I beg")
@@ -55,7 +55,14 @@ def render_category(category_title: str) -> Iterator[Tuple[str, HTML]]:
 
         gallery_pics.append((pic.stem, f"/{link}"))
 
-        args = dict(src=link, back=f"/{category_title}.html")
+        args = {
+            "src": link,
+            "back": f"/{category_title}.html",
+            "next": (
+                f"{pics_in_dir[i + 1].stem}.html" if i < len(pics_in_dir) - 1 else None
+            ),
+            "prev": f"{pics_in_dir[i - 1].stem}.html" if i > 0 else None,
+        }
         yield f"{pic.stem}.html", env.get_template("pic.html").render(**args)
 
     yield (

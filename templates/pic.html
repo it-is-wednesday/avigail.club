@@ -1,7 +1,30 @@
 {# -*- engine:jinja2 -*- #}
 {% extends 'base.html' %}
 {% block body %}
-    <div id="pic-page">
+    <div id="pic-page-nav">
+        {% if next %}
+            <div class="direction">
+                <div dir="rtl">לתמונה הבאה!!</div>
+                <a href="{{next}}">
+                    <img src="/left.webp">
+                </a>
+            </div>
+        {% endif %}
+
+        <div class="spacer"></div>
+
+        {% if prev %}
+            <div class="direction">
+                <div dir="rtl">לתמונה הקודמת!!</div>
+                <a href="{{prev}}">
+                    <img src="/right.webp">
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    <!-- I will get back to it!! haha get it? back -->
+    <!-- <a href="{{back}}">Back</a> -->
+    <div id="pic-page-pic">
         <img src="{{src}}" alt="{{name}}" />
     </div>
 {% endblock %}

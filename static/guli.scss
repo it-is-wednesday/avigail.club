@@ -47,7 +47,20 @@ body {
   align-items: center;
 }
 
-#pic-page img {
+#pic-page-nav {
+  display: flex;
+
+  .direction {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .spacer {
+    flex: 1;
+  }
+}
+
+#pic-page-pic img {
   width: 100%;
 }
 
@@ -72,7 +85,7 @@ body {
     margin-right: $links-margin;
   }
 
-  #pic-page img {
+  #pic-page-pic img {
     margin-left: 50%;
     transform: translateX(-50%);
   }
