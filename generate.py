@@ -2,6 +2,7 @@ from datetime import datetime
 from pathlib import Path
 from shutil import copy2, copytree
 from subprocess import run
+from typing import List, Tuple
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
@@ -25,15 +26,6 @@ def is_pic_square(pic: Path) -> bool:
     return width == height
 
 
-def pics_in_dir(d: Path):
-    """
-    Iterate over files in given directory, return a tuple of the filename and a
-    link to use as a src attribute for <img>
-    """
-    for p in d.iterdir():
-        yield p.name, f"/{p.relative_to(pics_dir.parent)}"
-
-
 def render(template_name, title, **kwargs):
     rendered = env.get_template(template_name).render(**kwargs)
     out_dir.joinpath(f"{title}.html").write_text(rendered)
@@ -51,11 +43,20 @@ if __name__ == "__main__":
     # to let a machine randomly crop pics..............)
     for category in ["tats", "mu"]:
         directory = pics_dir / category
+        pics_in_dir: List[Tuple[str, str]] = []
+
         for pic in directory.iterdir():
             if not is_pic_square(pic):
                 filename = pic.relative_to(directory.parent)
                 raise ValueError(f"PLEASE make {filename} a square!!!! I beg")
-        render("gallery.html", category, pics=pics_in_dir(directory))
+
+            link = pic.relative_to(pics_dir.parent)
+
+            pics_in_dir.append((pic.stem, f"/{link}"))
+
+            render("pic.html", pic.stem, src=link)
+
+        render("gallery.html", category, pics=pics_in_dir)
     print("💪 Generated pages")
 
     copytree("static", "out/", dirs_exist_ok=True)

@@ -57,6 +57,11 @@ body {
   }
 }
 
+#pic-page img {
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
 /* rules for computer screens */
 @media (min-width: 1000px) {
   body {

@@ -3,7 +3,7 @@
 {% block body %}
     <div id="gallery">
         {% for name, src in pics %}
-            <a href="{{src}}">
+            <a href="/{{name}}.html">
                 <img src="{{src}}" alt="{{name}}" />
             </a>
         {% endfor %}
