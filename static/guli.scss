@@ -49,14 +49,23 @@ body {
 
 #pic-page-nav {
   display: flex;
+  padding-bottom: 0.5em;
+  padding-top: 0.5em;
 
   .direction {
     display: flex;
     flex-direction: column;
+    white-space: nowrap;
+    align-items: center;
   }
 
   .spacer {
     flex: 1;
+    min-width: 30%;
+  }
+
+  img {
+    max-width: 100%;
   }
 }
 
