@@ -1,10 +1,12 @@
 from datetime import datetime
 from pathlib import Path
-from shutil import copy2, copytree
+from shutil import copy2, copytree, rmtree
 from subprocess import run
-from typing import List, Tuple
+from typing import Iterator, List, Tuple
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+
+HTML = str
 
 env = Environment(
     loader=FileSystemLoader("templates"),
@@ -12,7 +14,6 @@ env = Environment(
 )
 
 out_dir = Path("out")
-out_dir.mkdir(exist_ok=True)
 
 pics_dir = Path("static/pics")
 
@@ -31,32 +32,54 @@ def render(template_name, title, **kwargs):
     out_dir.joinpath(f"{title}.html").write_text(rendered)
 
 
-print()
-print(datetime.now())
+def render_category(category_title: str) -> Iterator[Tuple[str, HTML]]:
+    """
+    Iterates over the category's pic directory, rendering the category's
+    gallery HTML and every picture's individual page's HTML as well.
+
+    Returns an iterator of filenames and HTML strings. The HTML should be
+    written into a file at the filename.
+
+    Raises ValueError on processing pictures that aren't square (width != height)
+    """
+    directory = pics_dir / category_title
+    pics_in_dir = list(directory.iterdir())
+    gallery_pics: List[Tuple[str, str]] = []
+
+    for pic in pics_in_dir:
+        if not is_pic_square(pic):
+            filename = pic.relative_to(directory.parent)
+            raise ValueError(f"PLEASE make {filename} a square!!!! I beg")
+
+        link = pic.relative_to(pics_dir.parent)
+
+        gallery_pics.append((pic.stem, f"/{link}"))
+
+        args = dict(src=link, back=f"/{category_title}.html")
+        yield f"{pic.stem}.html", env.get_template("pic.html").render(**args)
+
+    yield (
+        f"{category_title}.html",
+        env.get_template("gallery.html").render(pics=gallery_pics),
+    )
 
 
 if __name__ == "__main__":
+    print()
+    print(datetime.now())
+
+    # Fresh start 😎
+    rmtree(out_dir, ignore_errors=True)
+    out_dir.mkdir()
+
     render("index.html", "index")
 
     # Render makeup and tattoo galleries, stopping the process if one of the
     # pics isn't square, prompting the user to fix it manually (I'm not going
     # to let a machine randomly crop pics..............)
     for category in ["tats", "mu"]:
-        directory = pics_dir / category
-        pics_in_dir: List[Tuple[str, str]] = []
-
-        for pic in directory.iterdir():
-            if not is_pic_square(pic):
-                filename = pic.relative_to(directory.parent)
-                raise ValueError(f"PLEASE make {filename} a square!!!! I beg")
-
-            link = pic.relative_to(pics_dir.parent)
-
-            pics_in_dir.append((pic.stem, f"/{link}"))
-
-            render("pic.html", pic.stem, src=link)
-
-        render("gallery.html", category, pics=pics_in_dir)
+        for target_filename, html in render_category(category):
+            out_dir.joinpath(target_filename).write_text(html)
     print("💪 Generated pages")
 
     copytree("static", "out/", dirs_exist_ok=True)
