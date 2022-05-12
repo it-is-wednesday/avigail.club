@@ -16,7 +16,7 @@ for filename in *; do
     # the filename without extension
     if identify -format "%t\n" "$filename" 2> /dev/null; then
         out="${filename%.*}.webp"
-        convert -quality 70 -resize 768x768 "$filename" "$out"
+        convert "$filename" "$out"
 
         # in case the file we converted is already webp, there's no need to
         # delete it
