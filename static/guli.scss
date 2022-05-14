@@ -10,24 +10,7 @@ html {
   padding-left: $page-padding;
   padding-right: $page-padding;
 
-  animation-duration: 4s;
-  animation-name: bg-colors;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
-@keyframes bg-colors {
-  from {
-    background-color: $bg-base-color;
-  }
-
-  90% {
-    background-color: $bg-base-color;
-  }
-
-  to {
-    background-color: $bg-flash-color;
-  }
+  background: url("/bgpattern.webp");
 }
 
 body {
