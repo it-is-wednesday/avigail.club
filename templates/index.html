@@ -2,17 +2,14 @@
 {% extends 'base.html' %}
 {% block body %}
     <div id="index-links" class="cool-bg">
-        <div>
-            <a href="/tats.html">
-                <img src="/ink.gif" alt="tattoos"/>
-            </a>
-        </div>
-        <div>
-            <a href="/mu.html">
-                <img src="/fairyglitter.gif" alt="makeup"/>
-            </a>
-        </div>
-        <div> קעקועים </div>
-        <div> איפור </div>
+        <a href="/tats.html" class="pic-with-text-underneath disguise-links">
+            <img src="/ink.gif" alt="tattoos"/>
+            <div> קעקועים </div>
+        </a>
+        <div class="spacer"></div>
+        <a href="/mu.html" class="pic-with-text-underneath disguise-links">
+            <img src="/fairyglitter.gif" alt="makeup"/>
+            <div> איפור </div>
+        </a>
     </div>
 {% endblock %}
