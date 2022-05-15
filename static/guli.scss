@@ -2,8 +2,6 @@
 
 $links-margin: 20%;
 $page-padding: 14px;
-$bg-base-color: #99ccff;
-$bg-flash-color: color.adjust($bg-base-color, $green: 60%);
 
 html {
   /* for mobile */
@@ -16,6 +14,10 @@ html {
 body {
   margin-left: auto;
   margin-right: auto;
+}
+
+.cool-bg {
+  background: #72c8d8;
 }
 
 #index-links {
@@ -35,20 +37,29 @@ body {
   display: flex;
   padding-bottom: 0.5em;
 
+  .spacer {
+    flex: 1;
+    min-width: 15%;
+  }
+
   .direction {
+    @extend .cool-bg;
     display: flex;
     flex-direction: column;
     white-space: nowrap;
     align-items: center;
-  }
+    padding-top: 10px;
 
-  .spacer {
-    flex: 1;
-    min-width: 30%;
-  }
+    text-decoration: none;
+    color: black;
 
-  img {
-    max-width: 100%;
+    div {
+      margin: 5px;
+    }
+
+    img {
+      max-width: 70%;
+    }
   }
 }
 

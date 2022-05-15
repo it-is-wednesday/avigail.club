@@ -3,23 +3,19 @@
 {% block body %}
     <div id="pic-page-nav">
         {% if next %}
-            <div class="direction">
-                <a href="{{next}}">
-                    <img src="/left.webp">
-                </a>
+            <a href="{{next}}" class="direction">
+                <img src="/left.webp">
                 <div dir="rtl">לתמונה הבאה!!</div>
-            </div>
+            </a>
         {% endif %}
 
         <div class="spacer"></div>
 
         {% if prev %}
-            <div class="direction">
-                <a href="{{prev}}">
-                    <img src="/right.webp">
-                </a>
+            <a href="{{prev}}" class="direction">
+                <img src="/right.webp">
                 <div dir="rtl">לתמונה הקודמת!!</div>
-            </div>
+            </a>
         {% endif %}
     </div>
     <!-- I will get back to it!! haha get it? back -->
