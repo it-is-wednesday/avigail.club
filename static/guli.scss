@@ -3,6 +3,8 @@
 $links-margin: 20%;
 $page-padding: 14px;
 
+$cool-bg-color: #72c8d8;
+
 html {
   /* for mobile */
   padding-left: $page-padding;
@@ -17,7 +19,26 @@ body {
 }
 
 .cool-bg {
-  background: #72c8d8;
+  background: linear-gradient(
+    to top,
+    $cool-bg-color,
+    color.adjust($cool-bg-color, $lightness: +20%, $hue: +50),
+    color.adjust($cool-bg-color, $lightness: +30%, $hue: +70),
+  );
+  background-clip: text;
+  animation: cool-bg-animation 5s ease infinite;
+  background-size: 100% 400%;
+}
+
+@keyframes cool-bg-animation {
+  0%,
+  100% {
+    background-position: 0 0;
+  }
+
+  50% {
+    background-position: 0 100%;
+  }
 }
 
 #index-links {
