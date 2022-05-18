@@ -1,26 +1,28 @@
 {# -*- engine:jinja2 -*- #}
 {% extends 'base.html' %}
 {% block body %}
-    <div id="pic-page-nav">
-        {% if next %}
-            <a href="{{next}}" class="direction disguise-links cool-bg">
-                <img src="/left.webp">
-                <div dir="rtl">לתמונה הבאה!!</div>
-            </a>
-        {% endif %}
+    <div id="pic-page">
+        <div id="pic-page-nav">
+            {% if next %}
+                <a href="{{next}}" class="direction disguise-links cool-bg">
+                    <img src="/left.webp">
+                    <div dir="rtl">לתמונה הבאה!!</div>
+                </a>
+            {% endif %}
 
-        <div class="spacer"></div>
+            <div class="spacer"></div>
 
-        {% if prev %}
-            <a href="{{prev}}" class="direction disguise-links cool-bg">
-                <img src="/right.webp">
-                <div dir="rtl">לתמונה הקודמת!!</div>
-            </a>
-        {% endif %}
-    </div>
-    <!-- I will get back to it!! haha get it? back -->
-    <!-- <a href="{{back}}">Back</a> -->
-    <div id="pic-page-pic">
-        <img src="{{src}}" alt="{{name}}" />
+            {% if prev %}
+                <a href="{{prev}}" class="direction disguise-links cool-bg">
+                    <img src="/right.webp">
+                    <div dir="rtl">לתמונה הקודמת!!</div>
+                </a>
+            {% endif %}
+        </div>
+        <!-- I will get back to it!! haha get it? back -->
+        <!-- <a href="{{back}}">Back</a> -->
+        <div id="pic-page-pic">
+            <img src="{{src}}" alt="{{name}}" />
+        </div>
     </div>
 {% endblock %}

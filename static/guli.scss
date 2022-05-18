@@ -110,9 +110,15 @@ body {
 }
 
 /* rules for computer screens */
-@media (min-width: 1000px) {
+@media (min-width: 800px) {
+  #pic-page {
+    max-width: 30rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   body {
-    max-width: 40em;
+    max-width: 50rem;
   }
 
   #index-links {
