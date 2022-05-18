@@ -1,4 +1,5 @@
 from datetime import datetime
+from functools import partial
 from pathlib import Path
 from shutil import copy2, copytree, rmtree
 from subprocess import run
@@ -72,6 +73,9 @@ def render_category(category_title: str) -> Iterator[Tuple[str, HTML]]:
 
 
 if __name__ == "__main__":
+    # Flushing is required to let watchexec display it before the script exits
+    print = partial(print, flush=True)
+
     print()
     print(datetime.now())
 
@@ -87,7 +91,7 @@ if __name__ == "__main__":
     for category in ["tats", "mu"]:
         for target_filename, html in render_category(category):
             out_dir.joinpath(target_filename).write_text(html)
-    print("💪 Generated pages")
+        print(f"💪 Generated {category} category")
 
     copytree("static", "out/", dirs_exist_ok=True)
     print("💪 Copied static assets")
