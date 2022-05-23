@@ -45,7 +45,7 @@ body {
   color: black;
 }
 
-#index-links {
+.index-links {
   display: flex;
   justify-content: center;
   padding: 5px;
@@ -61,14 +61,14 @@ body {
   align-items: center;
 }
 
-#title {
+.site-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-bottom: 1rem;
 }
 
-#pic-page-nav {
+.pic-page-nav {
   display: flex;
   padding-bottom: 0.5em;
 
@@ -94,11 +94,11 @@ body {
   }
 }
 
-#pic-page-pic img {
+.pic-page-main-pic {
   width: 100%;
 }
 
-#gallery {
+.gallery {
   display: grid;
   direction: rtl;
   gap: 5px;
@@ -111,7 +111,7 @@ body {
 
 /* rules for computer screens */
 @media (min-width: 800px) {
-  #pic-page {
+  .pic-page {
     max-width: 30rem;
     margin-left: auto;
     margin-right: auto;
@@ -121,12 +121,12 @@ body {
     max-width: 50rem;
   }
 
-  #index-links {
+  .index-links {
     margin-left: $links-margin;
     margin-right: $links-margin;
   }
 
-  #pic-page-pic img {
+  .pic-page-main-pic {
     margin-left: 50%;
     transform: translateX(-50%);
   }

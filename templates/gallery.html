@@ -1,7 +1,7 @@
 {# -*- engine:jinja2 -*- #}
 {% extends 'base.html' %}
 {% block body %}
-    <div id="gallery">
+    <div class="gallery">
         {% for name, src in pics %}
             <a href="/{{name}}.html">
                 <img src="{{src}}" alt="{{name}}" />

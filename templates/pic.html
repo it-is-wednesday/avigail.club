@@ -1,8 +1,8 @@
 {# -*- engine:jinja2 -*- #}
 {% extends 'base.html' %}
 {% block body %}
-    <div id="pic-page">
-        <div id="pic-page-nav">
+    <div class="pic-page">
+        <div class="pic-page-nav">
             {% if next %}
                 <a href="{{next}}" class="direction disguise-links cool-bg">
                     <img src="/left.webp">
@@ -21,8 +21,6 @@
         </div>
         <!-- I will get back to it!! haha get it? back -->
         <!-- <a href="{{back}}">Back</a> -->
-        <div id="pic-page-pic">
-            <img src="{{src}}" alt="{{name}}" />
-        </div>
+        <img class="pic-page-main-pic" src="{{src}}" alt="{{name}}" />
     </div>
 {% endblock %}
