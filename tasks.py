@@ -1,12 +1,22 @@
 import os
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from multiprocessing import Process
+from pathlib import Path
 
+from invoke import Config, task
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
 
 from generate import main as generate_html
-from invoke import task
+
+
+@task
+def optimize_pics(c):
+    for f in Path("./static/pics/").rglob("*.*"):
+        if f.suffix != ".webp":
+            with c.cd(f.parent):
+                c.run(f"convert {f.name} {f.stem}.webp")
+            f.rename(Path(f"~/.local/share/Trash/{f.name}").expanduser())
 
 
 @task
