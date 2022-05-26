@@ -28,11 +28,6 @@ def is_pic_square(pic: Path) -> bool:
     return width == height
 
 
-def render(template_name, title, **kwargs):
-    rendered = env.get_template(template_name).render(**kwargs)
-    out_dir.joinpath(f"{title}.html").write_text(rendered)
-
-
 def render_category(category_title: str) -> Iterator[Tuple[str, HTML]]:
     """
     Iterates over the category's pic directory, rendering the category's
@@ -72,10 +67,7 @@ def render_category(category_title: str) -> Iterator[Tuple[str, HTML]]:
     )
 
 
-if __name__ == "__main__":
-    # Flushing is required to let watchexec display it before the script exits
-    print = partial(print, flush=True)
-
+def main():
     print()
     print(datetime.now())
 
@@ -83,7 +75,7 @@ if __name__ == "__main__":
     rmtree(out_dir, ignore_errors=True)
     out_dir.mkdir()
 
-    render("index.html", "index")
+    out_dir.joinpath("index.html").write_text(env.get_template("index.html").render())
 
     # Render makeup and tattoo galleries, stopping the process if one of the
     # pics isn't square, prompting the user to fix it manually (I'm not going
@@ -99,3 +91,7 @@ if __name__ == "__main__":
     copy2("static/guli.scss", "out/guli.scss")
     run(["sass", "out/guli.scss", "out/guli.css"])
     print("💪 Generated CSS")
+
+
+if __name__ == "__main__":
+    main()
