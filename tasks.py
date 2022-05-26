@@ -9,6 +9,9 @@ from watchdog.observers import Observer
 
 from generate import main as generate_html
 
+# chdir to project root
+os.chdir(Path(__file__).parent.absolute())
+
 
 @task
 def optimize_pics(c):
@@ -34,7 +37,7 @@ def publish(c):
     c.run("rsync -Aax --delete ./out/ www-data@avocadosh.xyz:/var/www/avigail/")
 
 
-@task
+@task(generate)
 def watch(c):
     def http():
         # there's no way other way to change the serving directory xd
