@@ -1,5 +1,15 @@
 {# -*- engine:jinja2 -*- #}
 {% extends 'base.html' %}
+
+{% macro contact_detail(text, href) -%}
+    <a class="detail disguise-links" href="{{ href }}" target="_blank">
+        {% for letter in text %}
+            <div>{{ letter }}</div>
+        {% endfor %}
+    </a>
+{% endmacro %}
+
+
 {% block body %}
     <div class="index-page">
         <div class="index-links cool-bg">
@@ -15,9 +25,9 @@
         </div>
 
         <div class="contact-details cool-bg">
-            <img src="/phone.webp" alt="phone">
-            <div>Avigailk12357@gmail.com</div>
-            <div>@motherfucking_hell_yeah_bitch</div>
+            <img class="phone-pic" src="/phone.webp" alt="phone">
+            {{ contact_detail("avigailk12357@gmail.com", "mailto:avigailk12357@gmail.com") }}
+            {{ contact_detail("@motherfucking_hell_yeah_bitch", "https://instagram.com/motherfucking_hell_yeah_bitch") }}
         </div>
     </div>
 {% endblock %}
