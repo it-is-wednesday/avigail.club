@@ -1,20 +1,10 @@
-from datetime import datetime
-from functools import partial
 from pathlib import Path
-from shutil import copy2, copytree, rmtree
 from subprocess import run
 from typing import Iterator, List, Tuple
 
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from jinja2 import Template
 
 HTML = str
-
-env = Environment(
-    loader=FileSystemLoader("templates"),
-    autoescape=select_autoescape(["html"]),
-)
-
-out_dir = Path("out")
 
 pics_dir = Path("static/pics")
 
@@ -28,7 +18,9 @@ def is_pic_square(pic: Path) -> bool:
     return width == height
 
 
-def render_category(category_title: str) -> Iterator[Tuple[str, HTML]]:
+def render_category(
+    category_title: str, pic_template: Template, gallery_template: Template
+) -> Iterator[Tuple[str, HTML]]:
     """
     Iterates over the category's pic directory, rendering the category's
     gallery HTML and every picture's individual page's HTML as well.
@@ -59,39 +51,9 @@ def render_category(category_title: str) -> Iterator[Tuple[str, HTML]]:
             ),
             "prev": f"{pics_in_dir[i - 1].stem}.html" if i > 0 else None,
         }
-        yield f"{pic.stem}.html", env.get_template("pic.html").render(**args)
+        yield f"{pic.stem}.html", pic_template.render(**args)
 
     yield (
         f"{category_title}.html",
-        env.get_template("gallery.html").render(pics=gallery_pics),
+        gallery_template.render(pics=gallery_pics),
     )
-
-
-def main():
-    print()
-    print(datetime.now())
-
-    # Fresh start 😎
-    rmtree(out_dir, ignore_errors=True)
-    out_dir.mkdir()
-
-    out_dir.joinpath("index.html").write_text(env.get_template("index.html").render())
-
-    # Render makeup and tattoo galleries, stopping the process if one of the
-    # pics isn't square, prompting the user to fix it manually (I'm not going
-    # to let a machine randomly crop pics..............)
-    for category in ["tats", "mu"]:
-        for target_filename, html in render_category(category):
-            out_dir.joinpath(target_filename).write_text(html)
-        print(f"💪 Generated {category} category")
-
-    copytree("static", "out/", dirs_exist_ok=True)
-    print("💪 Copied static assets")
-
-    copy2("static/guli.scss", "out/guli.scss")
-    run(["sass", "out/guli.scss", "out/guli.css"])
-    print("💪 Generated CSS")
-
-
-if __name__ == "__main__":
-    main()
