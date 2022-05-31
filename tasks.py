@@ -1,8 +1,10 @@
 import os
+import random
 from datetime import datetime
 from functools import partial
 from pathlib import Path
 from shutil import copy2, copytree, rmtree
+from string import ascii_lowercase
 from typing import Iterator, List, Tuple
 
 from invoke import Config, task
@@ -15,6 +17,19 @@ from gallery import is_pic_square, render_category
 os.chdir(Path(__file__).parent.absolute())
 
 pics_dir = Path("./static/pics")
+
+
+@task
+def randomize_filenames(c, directory):
+    """
+    Rename all webp files in directory to a random ascii sequence
+
+    Use it on the Nextcloud directory
+    """
+    d = Path(directory)
+    for pic in d.rglob("*.webp"):
+        new_name = "".join(random.choice(ascii_lowercase) for _ in range(5))
+        pic.rename(pic.parent / f"{new_name}.webp")
 
 
 @task
