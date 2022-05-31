@@ -22,14 +22,19 @@ pics_dir = Path("./static/pics")
 @task
 def randomize_filenames(c, directory):
     """
-    Rename all webp files in directory to a random ascii sequence
+    Rename all webp files in directory to a random sequence
 
-    Use it on the Nextcloud directory
+    You should use it on the Nextcloud directory
+    The files will be renamed into a random sequence of 5 lowercase letters.
+    Files that already match this criteria will not be renamed.
     """
     d = Path(directory)
     for pic in d.rglob("*.webp"):
-        new_name = "".join(random.choice(ascii_lowercase) for _ in range(5))
-        pic.rename(pic.parent / f"{new_name}.webp")
+        # rename only if the name isn't already randomized. we don't wanna mess
+        # up existing URLs!!
+        if len(pic.stem) != 5 or any(letter not in ascii_lowercase for letter in pic.stem):
+            new_name = "".join(random.choice(ascii_lowercase) for _ in range(5))
+            pic.rename(pic.parent / f"{new_name}.webp")
 
 
 @task
