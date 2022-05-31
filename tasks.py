@@ -9,10 +9,12 @@ from invoke import Config, task
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from livereload import Server
 
-from gallery import render_category
+from gallery import is_pic_square, render_category
 
 # chdir to project root
 os.chdir(Path(__file__).parent.absolute())
+
+pics_dir = Path("./static/pics")
 
 
 @task
@@ -26,7 +28,12 @@ def optimize_pics(c):
 
 @task
 def sync(c):
-    c.run('rclone --verbose sync "Nextcloud:/אביגיל" ./static/pics')
+    c.run(f'rclone --verbose sync "Nextcloud:/אביגיל" {pics_dir}')
+
+    for pic in pics_dir.rglob("*.webp"):
+        if not is_pic_square(pic):
+            filename = pic.relative_to(pics_dir.parents[1])
+            raise ValueError(f"PLEASE make {filename} a square!!!! I beg")
 
 
 @task

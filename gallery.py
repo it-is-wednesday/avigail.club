@@ -35,10 +35,6 @@ def render_category(
     gallery_pics: List[Tuple[str, str]] = []
 
     for i, pic in enumerate(pics_in_dir):
-        if not is_pic_square(pic):
-            filename = pic.relative_to(directory.parent)
-            raise ValueError(f"PLEASE make {filename} a square!!!! I beg")
-
         link = pic.relative_to(pics_dir.parent)
 
         gallery_pics.append((pic.stem, f"/{link}"))
