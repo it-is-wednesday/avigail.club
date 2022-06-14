@@ -13,6 +13,8 @@ from livereload import Server
 
 from gallery import is_pic_square, render_category
 
+RCLONE_REMOTE_PATH = "Drive:/"
+
 # chdir to project root
 os.chdir(Path(__file__).parent.absolute())
 
@@ -48,7 +50,7 @@ def optimize_pics(c):
 
 @task
 def sync(c):
-    c.run(f'rclone --verbose sync "Nextcloud:/אביגיל" {pics_dir}')
+    c.run(f'rclone --verbose sync "{RCLONE_REMOTE_PATH}" "{pics_dir}"')
 
     for pic in pics_dir.rglob("*.webp"):
         if not is_pic_square(pic):
