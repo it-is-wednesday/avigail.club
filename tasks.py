@@ -5,8 +5,6 @@ from pathlib import Path
 from shutil import copy2, copytree, rmtree
 
 from invoke import task
-from jinja2 import Environment, FileSystemLoader, select_autoescape
-from livereload import Server
 
 from gallery import is_pic_square, render_category, unique_filename
 
@@ -41,6 +39,8 @@ def sync(c):
 
 @task
 def generate(c):
+    from jinja2 import Environment, FileSystemLoader, select_autoescape
+
     out_dir = Path("out")
 
     env = Environment(
@@ -82,6 +82,8 @@ def publish(c):
 
 @task(generate)
 def watch(c):
+    from livereload import Server
+
     server = Server()
 
     server.watch("static/", partial(generate, c=c))
