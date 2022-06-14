@@ -1,4 +1,6 @@
+from hashlib import sha256
 from pathlib import Path
+from string import ascii_lowercase
 from subprocess import run
 from typing import Iterator, List, Tuple
 
@@ -7,6 +9,17 @@ from jinja2 import Template
 HTML = str
 
 pics_dir = Path("static/pics")
+
+
+def unique_filename(pic: Path, cap: int = 15) -> str:
+    """
+    Generate string based on sha256 applied to the file's content, making it as
+    unique as I can wish
+    """
+    with pic.open("rb") as f:
+        digest = sha256(f.read()).digest()
+
+    return "".join(ascii_lowercase[b % 26] for b in digest[:cap])
 
 
 def is_pic_square(pic: Path) -> bool:

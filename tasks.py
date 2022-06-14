@@ -1,17 +1,14 @@
 import os
-import random
 from datetime import datetime
 from functools import partial
 from pathlib import Path
 from shutil import copy2, copytree, rmtree
-from string import ascii_lowercase
-from typing import Iterator, List, Tuple
 
-from invoke import Config, task
+from invoke import task
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from livereload import Server
 
-from gallery import is_pic_square, render_category
+from gallery import is_pic_square, render_category, unique_filename
 
 RCLONE_REMOTE_PATH = "Drive:/"
 
@@ -22,40 +19,24 @@ pics_dir = Path("./static/pics")
 
 
 @task
-def randomize_filenames(c, directory):
-    """
-    Rename all webp files in directory to a random sequence
-
-    You should use it on the Nextcloud directory
-    The files will be renamed into a random sequence of 5 lowercase letters.
-    Files that already match this criteria will not be renamed.
-    """
-    d = Path(directory)
-    for pic in d.rglob("*.webp"):
-        # rename only if the name isn't already randomized. we don't wanna mess
-        # up existing URLs!!
-        if len(pic.stem) != 5 or any(letter not in ascii_lowercase for letter in pic.stem):
-            new_name = "".join(random.choice(ascii_lowercase) for _ in range(5))
-            pic.rename(pic.parent / f"{new_name}.webp")
-
-
-@task
-def optimize_pics(c):
-    for f in Path("./static/pics/").rglob("*.*"):
-        if f.suffix != ".webp":
-            with c.cd(f.parent):
-                c.run(f"convert {f.name} {f.stem}.webp")
-            f.rename(Path(f"~/.local/share/Trash/{f.name}").expanduser())
-
-
-@task
 def sync(c):
+    rmtree(pics_dir)
     c.run(f'rclone --verbose sync "{RCLONE_REMOTE_PATH}" "{pics_dir}"')
 
-    for pic in pics_dir.rglob("*.webp"):
+    for pic in pics_dir.rglob("*.*"):
+        # crash if pic is not exact square
         if not is_pic_square(pic):
             filename = pic.relative_to(pics_dir.parents[1])
             raise ValueError(f"PLEASE make {filename} a square!!!! I beg")
+
+        # convert pic to webp if it isn't already
+        if pic.suffix != ".webp":
+            with c.cd(pic.parent):
+                c.run(f"convert {pic.name} {pic.stem}.webp")
+            pic.rename(Path(f"~/.local/share/Trash/{pic.name}").expanduser())
+
+        # rename pic based on its pixels
+        pic.rename(pic.parent / f"{unique_filename(pic)}.webp")
 
 
 @task
