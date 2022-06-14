@@ -11,34 +11,38 @@ from gallery import is_pic_square, render_category, unique_filename
 RCLONE_REMOTE_PATH = "Drive:/"
 
 # chdir to project root
-os.chdir(Path(__file__).parent.absolute())
+if __name__ == "tasks":
+    os.chdir(Path(__file__).parent.absolute())
 
-pics_dir = Path("./static/pics")
+PICS_DIR = Path("./static/pics")
+TRASH_DIR = Path(".trash")
 
 
 @task
 def sync(c):
-    rmtree(pics_dir)
-    c.run(f'rclone --verbose sync "{RCLONE_REMOTE_PATH}" "{pics_dir}"')
+    c.run(f'rclone --verbose sync "{RCLONE_REMOTE_PATH}" "{PICS_DIR}"')
 
-    for pic in pics_dir.rglob("*.*"):
+    TRASH_DIR.mkdir(exist_ok=True)
+
+    for pic in PICS_DIR.rglob("*.*"):
         # crash if pic is not exact square
         if not is_pic_square(pic):
-            filename = pic.relative_to(pics_dir.parents[1])
+            filename = pic.relative_to(PICS_DIR.parents[1])
             raise ValueError(f"PLEASE make {filename} a square!!!! I beg")
 
         # convert pic to webp if it isn't already
         if pic.suffix != ".webp":
-            with c.cd(pic.parent):
-                c.run(f"convert {pic.name} {pic.stem}.webp")
-            pic.rename(Path(f"~/.local/share/Trash/{pic.name}").expanduser())
+            parent = pic.parent.absolute()
+            c.run(f"convert {parent}/{pic.name} {parent}/{pic.stem}.webp")
+            pic.rename(TRASH_DIR / pic.name)
 
-        # rename pic based on its pixels
+    # rerunning the loop because some files have been renamed or trashed
+    for pic in PICS_DIR.rglob("*.*"):
         pic.rename(pic.parent / f"{unique_filename(pic)}.webp")
 
 
 @task
-def generate(c):
+def generate(c, sass_bin="sass"):
     from jinja2 import Environment, FileSystemLoader, select_autoescape
 
     out_dir = Path("out")
@@ -71,7 +75,7 @@ def generate(c):
     print("💪 Copied static assets")
 
     copy2("static/guli.scss", "out/guli.scss")
-    c.run("sass out/guli.scss out/guli.css")
+    c.run(f"{sass_bin} out/guli.scss out/guli.css")
     print("💪 Generated CSS")
 
 
