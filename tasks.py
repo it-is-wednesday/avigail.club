@@ -90,7 +90,13 @@ def watch(c):
 
     server = Server()
 
-    server.watch("static/", partial(generate, c=c))
-    server.watch("templates/", partial(generate, c=c))
+    def gen():
+        generate(c)
+
+    # Note that you can't use a partial/lambda here because livereload needs a
+    # function with a name... or something. I think there's a weird interaction
+    # here with invoke.
+    server.watch("static/", gen)
+    server.watch("templates/", gen)
 
     server.serve(root="out/")
