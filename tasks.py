@@ -14,6 +14,7 @@ RCLONE_REMOTE_PATH = "Drive:/"
 if __name__ == "tasks":
     os.chdir(Path(__file__).parent.absolute())
 
+WEBP_CONVERT_PARAMS = "-quality 90 -resize 768x768"
 PICS_DIR = Path("./static/pics")
 TRASH_DIR = Path(".trash")
 
@@ -33,7 +34,10 @@ def sync(c):
         # convert pic to webp if it isn't already
         if pic.suffix != ".webp":
             parent = pic.parent.absolute()
-            c.run(f"convert {parent}/{pic.name} {parent}/{pic.stem}.webp")
+            c.run(
+                f"convert {WEBP_CONVERT_PARAMS} "
+                f"{parent}/{pic.name} {parent}/{pic.stem}.webp"
+            )
             pic.rename(TRASH_DIR / pic.name)
 
     # rerunning the loop because some files have been renamed or trashed
