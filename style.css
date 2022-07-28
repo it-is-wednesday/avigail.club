@@ -1,16 +1,13 @@
-@use "sass:color";
-
-$links-margin: 20%;
-$page-padding: 14px;
-
-$cool-bg-color: #72c8d8;
+:root {
+  --links-margin: 20%;
+  --page-padding: 14px;
+}
 
 html {
   /* for mobile */
-  padding-left: $page-padding;
-  padding-right: $page-padding;
-
-  background: url("/bgpattern.webp");
+  padding-left: var(--page-padding);
+  padding-right: var(--page-padding);
+  background: url("assets/bgpattern.webp");
 }
 
 body {
@@ -19,12 +16,7 @@ body {
 }
 
 .cool-bg {
-  background: linear-gradient(
-    to top,
-    $cool-bg-color,
-    color.adjust($cool-bg-color, $lightness: +20%, $hue: +50),
-    color.adjust($cool-bg-color, $lightness: +30%, $hue: +70)
-  );
+  background: linear-gradient(to top, #72c8d8, #c2c2ee, #efeaf9);
   animation: cool-bg-animation 5s ease infinite;
   background-size: 100% 400%;
 }
@@ -34,7 +26,6 @@ body {
   100% {
     background-position: 0 0;
   }
-
   50% {
     background-position: 0 100%;
   }
@@ -48,24 +39,22 @@ body {
 
 .contact-details {
   display: grid;
-  grid-template: 1fr 1fr / 1fr 2fr;
+  grid-template: 1fr 1fr/1fr 2fr;
   padding: 15px;
   align-items: center;
-
-  .phone-pic {
-    grid-row: 1 / 3;
-    justify-self: center;
-  }
-
-  .detail {
-    display: grid;
-    grid-template-rows: repeat(2, 1fr);
-    justify-items: center;
-    width: 100%;
-    color: blue;
-    font-family: monospace;
-    font-size: 1rem;
-  }
+}
+.contact-details .phone-pic {
+  grid-row: 1/3;
+  justify-self: center;
+}
+.contact-details .detail {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  justify-items: center;
+  width: 100%;
+  color: blue;
+  font-family: monospace;
+  font-size: 1rem;
 }
 
 .bio {
@@ -74,15 +63,13 @@ body {
   text-shadow: 4px 4px 4px #4f4f4f;
   font-size: 1.3rem;
   letter-spacing: 1px;
-
-  .emote {
-    white-space: nowrap;
-    font-size: 1rem;
-  }
-
-  .wide {
-    letter-spacing: 3px;
-  }
+}
+.bio .emote {
+  white-space: nowrap;
+  font-size: 1rem;
+}
+.bio .wide {
+  letter-spacing: 3px;
 }
 
 .disguise-links {
@@ -94,10 +81,9 @@ body {
   display: flex;
   justify-content: center;
   padding: 5px;
-
-  .spacer {
-    flex: 0.6;
-  }
+}
+.index-links .spacer {
+  flex: 0.6;
 }
 
 .pic-with-text-underneath {
@@ -116,27 +102,23 @@ body {
 .pic-page-nav {
   display: flex;
   padding-bottom: 0.5em;
-
-  .spacer {
-    flex: 1;
-    min-width: 15%;
-  }
-
-  .direction {
-    display: flex;
-    flex-direction: column;
-    white-space: nowrap;
-    align-items: center;
-    padding-top: 10px;
-
-    div {
-      margin: 5px;
-    }
-
-    img {
-      max-width: 70%;
-    }
-  }
+}
+.pic-page-nav .spacer {
+  flex: 1;
+  min-width: 15%;
+}
+.pic-page-nav .direction {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+  align-items: center;
+  padding-top: 10px;
+}
+.pic-page-nav .direction div {
+  margin: 5px;
+}
+.pic-page-nav .direction img {
+  max-width: 70%;
 }
 
 .pic-page-main-pic {
@@ -148,10 +130,9 @@ body {
   direction: rtl;
   gap: 5px;
   grid-template-columns: repeat(3, 1fr);
-
-  img {
-    max-width: 100%;
-  }
+}
+.gallery img {
+  max-width: 100%;
 }
 
 /* rules for computer screens */
@@ -161,21 +142,17 @@ body {
     margin-left: auto;
     margin-right: auto;
   }
-
   body {
     max-width: 50rem;
   }
-
   .index-page {
-    margin-left: $links-margin;
-    margin-right: $links-margin;
+    margin-left: var(--links-margin);
+    margin-right: var(--links-margin);
   }
-
   .pic-page-main-pic {
     margin-left: 50%;
     transform: translateX(-50%);
   }
-
   .contact-details .detail {
     font-size: 1.4rem;
   }
