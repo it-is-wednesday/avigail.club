@@ -1,6 +1,10 @@
 <?php
-  get_header();
-  query_posts(array('post_type' => get_post_type()));
+get_header();
+
+query_posts([
+  'post_type' => get_post_type(),
+  'posts_per_page' => -1, // loads all posts
+]);
 ?>
 
 <div class="gallery">
