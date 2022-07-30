@@ -28,11 +28,13 @@ add_action("after_setup_theme", function () {
     add_theme_support("post-thumbnails");
 });
 
+// cool numeric post links
 add_filter(
     "post_type_link",
     function ($post_link, $post = 0) {
-        if ($post->post_type === "makeup") {
-            return home_url("makeup/" . $post->ID . "/");
+        $type = $post->post_type;
+        if ($type === "makeup" || $type == "tattoos") {
+            return home_url("{$type}/" . $post->ID . "/");
         } else {
             return $post_link;
         }
