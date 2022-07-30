@@ -43,6 +43,23 @@ add_filter(
     3
 );
 
+// display featured image in post list
+add_filter("manage_posts_columns", function ($columns) {
+    $columns["img"] = "Featured Image";
+    return $columns;
+});
+add_filter(
+    "manage_posts_custom_column",
+    function ($column_name, $post_id) {
+        if ($column_name == "img") {
+            echo get_the_post_thumbnail($post_id, "thumbnail");
+        }
+        return $column_name;
+    },
+    10,
+    2
+);
+
 /*
  * Local Variables:
  * mode: php
